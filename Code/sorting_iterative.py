@@ -1,6 +1,10 @@
 #!python
 
 
+def swap(arr, i, j):
+    arr[i], arr[j] = arr[j], arr[i]
+
+
 def is_sorted(items):
     """Return a boolean indicating whether given items are in sorted order.
     Running time: O(n) becuase no matter what we have to go through
@@ -28,7 +32,7 @@ def bubble_sort(items):
         swapped = False
         for i in range(last_unsorted_index-1):
             if items[i] > items[i+1]:
-                items[i], items[i+1] = items[i+1], items[i]
+                swap(items, i, i+1)
                 swapped = True
         last_unsorted_index -= 1
     return items
@@ -47,7 +51,7 @@ def selection_sort(items):
         for i in range(unsorted_index, len(items)):
             if items[lowest] > items[i]:
                 lowest = i
-        items[unsorted_index], items[lowest] = items[lowest], items[unsorted_index]
+        swap(items, unsorted_index, lowest)
         unsorted_index += 1
 
 
@@ -62,8 +66,7 @@ def insertion_sort(items):
     while unsoted_index < len(items):
         unsorted_index = unsoted_index
         while unsorted_index > 0 and items[unsorted_index-1] > items[unsorted_index]:
-            items[unsorted_index], items[unsorted_index -
-                                         1] = items[unsorted_index-1], items[unsorted_index]
+            swap(items, unsorted_index, unsorted_index-1)
             unsorted_index = unsorted_index-1
         unsoted_index += 1
     return items
