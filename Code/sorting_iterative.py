@@ -64,12 +64,12 @@ def insertion_sort(items):
         than creating a new array."""
     unsoted_index = 1
     while unsoted_index < len(items):
-        j = unsoted_index
-        while j > 0 and items[j-1] > items[j]:
-            num = items[j]
-            items[j] = items[j-1]
-            items[j-1] = num
-            j = j-1
+        unsorted_index = unsoted_index
+        while unsorted_index > 0 and items[unsorted_index-1] > items[unsorted_index]:
+            temp = items[unsorted_index]
+            items[unsorted_index] = items[unsorted_index-1]
+            items[unsorted_index-1] = temp
+            unsorted_index = unsorted_index-1
         unsoted_index += 1
     return items
 
@@ -91,13 +91,13 @@ def binary_insertion_sort(items):
             return binary_search(items, low, mid, target)
         return mid
 
-    for i in range(len(items)):
-        ins = binary_search(items, 0, i, items[i])
-        if ins < i:
-            temp = items[i]
-            j = i-1
-            while j >= ins:
-                items[j + 1] = items[j]
-                j -= 1
+    for index in range(len(items)):
+        insert_index = binary_search(items, 0, index, items[index])
+        if insert_index < index:
+            temp = items[index]
+            unsorted_index = index-1
+            while unsorted_index >= insert_index:
+                items[j + 1] = items[unsorted_index]
+                unsorted_index -= 1
             items[ins] = temp
     return items
