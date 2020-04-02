@@ -27,10 +27,8 @@ def bubble_sort(items):
     while swapped:
         swapped = False
         for i in range(last_unsorted_index-1):
-            current = items[i]
-            if current > items[i+1]:
-                items[i] = items[i+1]
-                items[i+1] = current
+            if items[i] > items[i+1]:
+                items[i], items[i+1] = items[i+1], items[i]
                 swapped = True
         last_unsorted_index -= 1
     return items
@@ -46,12 +44,10 @@ def selection_sort(items):
     unsorted_index = 0
     while unsorted_index < len(items):
         lowest = unsorted_index
-        current_item = items[unsorted_index]
         for i in range(unsorted_index, len(items)):
             if items[lowest] > items[i]:
                 lowest = i
-        items[unsorted_index] = items[lowest]
-        items[lowest] = current_item
+        items[unsorted_index], items[lowest] = items[lowest], items[unsorted_index]
         unsorted_index += 1
 
 
@@ -66,9 +62,8 @@ def insertion_sort(items):
     while unsoted_index < len(items):
         unsorted_index = unsoted_index
         while unsorted_index > 0 and items[unsorted_index-1] > items[unsorted_index]:
-            temp = items[unsorted_index]
-            items[unsorted_index] = items[unsorted_index-1]
-            items[unsorted_index-1] = temp
+            items[unsorted_index], items[unsorted_index -
+                                         1] = items[unsorted_index-1], items[unsorted_index]
             unsorted_index = unsorted_index-1
         unsoted_index += 1
     return items
@@ -97,7 +92,7 @@ def binary_insertion_sort(items):
             temp = items[index]
             unsorted_index = index-1
             while unsorted_index >= insert_index:
-                items[j + 1] = items[unsorted_index]
+                items[unsorted_index + 1] = items[unsorted_index]
                 unsorted_index -= 1
-            items[ins] = temp
+            items[insert_index] = temp
     return items
