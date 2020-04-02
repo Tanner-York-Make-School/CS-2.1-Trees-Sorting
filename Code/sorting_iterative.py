@@ -72,3 +72,32 @@ def insertion_sort(items):
             j = j-1
         unsoted_index += 1
     return items
+
+
+def binary_insertion_sort(items):
+    """Sort given items by taking first unsorted item, inserting it in sorted
+    order in front of items, and repeating until all items are in order.
+    Running time: O(n^2) because under the worst case conditions we have to
+        go over every item per each item in the list.
+    Memory usage: O(1) because we are swaping values in the input array rather
+        than creating a new array."""
+    def binary_search(items, low, high, target):
+        if low == high:
+            return low
+        mid = (low + high) // 2
+        if target > items[mid]:
+            return binary_search(items, mid + 1, high, target)
+        elif target < items[mid]:
+            return binary_search(items, low, mid, target)
+        return mid
+
+    for i in range(len(items)):
+        ins = binary_search(items, 0, i, items[i])
+        if ins < i:
+            temp = items[i]
+            j = i-1
+            while j >= ins:
+                items[j + 1] = items[j]
+                j -= 1
+            items[ins] = temp
+    return items
