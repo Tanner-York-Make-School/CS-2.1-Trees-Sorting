@@ -1,36 +1,52 @@
 #!python
+from sorting_iterative import insertion_sort
 
 
 def merge(items1, items2):
     """Merge given lists of items, each assumed to already be in sorted order,
     and return a new list containing all items in sorted order.
-    TODO: Running time: ??? Why and under what conditions?
-    TODO: Memory usage: ??? Why and under what conditions?"""
-    # TODO: Repeat until one list is empty
-    # TODO: Find minimum item in both lists and append it to new list
-    # TODO: Append remaining items in non-empty list to new list
+    Running time: O(n+m) because we have to iterate over every item in both
+        list when merginf them together.
+    Memory usage: O(m+n) because we are creating a new array the size of both
+        inputs combined"""
+    merged_items = []
+    while len(items1) > 0 and len(items2) > 0:
+        minimun = items1.pop(0) if items1[0] < items2[0] else items2.pop(0)
+        merged_items.append(minimun)
+    not_empty = items1 if len(items1) > 0 else items2
+    for item in not_empty:
+        merged_items.append(item)
+    return merged_items
 
 
 def split_sort_merge(items):
     """Sort given items by splitting list into two approximately equal halves,
     sorting each with an iterative sorting algorithm, and merging results into
     a list in sorted order.
-    TODO: Running time: ??? Why and under what conditions?
-    TODO: Memory usage: ??? Why and under what conditions?"""
-    # TODO: Split items list into approximately equal halves
-    # TODO: Sort each half using any other sorting algorithm
-    # TODO: Merge sorted halves into one list in sorted order
+    Running time: O(n^2) because we are using another sorting algorithm to sort
+        the two lists and that algorithms time complexity is O(n^2) therfore 
+        making this algorithms time complexity the same as long as their are 
+        not worse operations outside of the sorting algorithm.
+    Memory usage: O(n) because we are creating a new list from the input using
+        the merge function."""
+    mid = len(items)//2
+    left, right = insertion_sort(items[:mid]), insertion_sort(items[mid:])
+    return merge(left, right)
 
 
 def merge_sort(items):
     """Sort given items by splitting list into two approximately equal halves,
     sorting each recursively, and merging results into a list in sorted order.
-    TODO: Running time: ??? Why and under what conditions?
-    TODO: Memory usage: ??? Why and under what conditions?"""
-    # TODO: Check if list is so small it's already sorted (base case)
-    # TODO: Split items list into approximately equal halves
-    # TODO: Sort each half by recursively calling merge sort
-    # TODO: Merge sorted halves into one list in sorted order
+    Running time: O(nlog(n)) because as the algorithm runs we still have to
+        iterate over every item but as we iterate the lists we are spliting 
+        are getting smaller by a factor of two.
+    Memory usage: O(n) beacuse as the algorithm runs it creates new arrays
+        thats memory adds to be the length of the input array."""
+    if len(items) < 2:
+        return items
+    mid = len(items)//2
+    left, right = merge_sort(items[:mid]), merge_sort(items[mid:])
+    return merge(left, right)
 
 
 def partition(items, low, high):

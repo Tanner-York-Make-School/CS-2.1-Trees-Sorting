@@ -53,6 +53,7 @@ def selection_sort(items):
                 lowest = i
         swap(items, unsorted_index, lowest)
         unsorted_index += 1
+    return items
 
 
 def insertion_sort(items):
