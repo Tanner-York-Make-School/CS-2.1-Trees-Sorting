@@ -79,7 +79,7 @@ def main():
     if order:
         test_sorting(order, sort_function, num_items, max_value)
     else:
-        test_sorting(sort_function, num_items, max_value)
+        test_sorting('ascend', sort_function, num_items, max_value)
 
 
 if __name__ == '__main__':
