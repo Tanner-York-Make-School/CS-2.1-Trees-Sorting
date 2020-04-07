@@ -1,4 +1,5 @@
 #!python
+import time
 
 from sorting_iterative import is_sorted, bubble_sort, selection_sort, insertion_sort, binary_insertion_sort
 from sorting_recursive import split_sort_merge, merge_sort, quick_sort
@@ -76,10 +77,12 @@ def main():
         return
 
     # Test sort function
+    start_time = time.time()
     if order:
         test_sorting(order, sort_function, num_items, max_value)
     else:
         test_sorting('ascend', sort_function, num_items, max_value)
+    print("--- %s seconds ---" % (time.time() - start_time))
 
 
 if __name__ == '__main__':
