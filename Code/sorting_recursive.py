@@ -2,7 +2,17 @@
 from sorting_iterative import insertion_sort
 
 
-def merge(items1, items2):
+def compare(item1, item2, order):
+    if order == 'ascend':
+        if item1 < item2:
+            return False
+    elif order == 'descend':
+        if item1 > item2:
+            return False
+    return True
+
+
+def merge(items1, items2, order='ascend'):
     """Merge given lists of items, each assumed to already be in sorted order,
     and return a new list containing all items in sorted order.
     Running time: O(n+m) because we have to iterate over every item in both
@@ -11,7 +21,8 @@ def merge(items1, items2):
         inputs combined"""
     merged_items = []
     while len(items1) > 0 and len(items2) > 0:
-        minimun = items1.pop(0) if items1[0] < items2[0] else items2.pop(0)
+        minimun = items2.pop(0) if compare(
+            items1[0], items2[0], order) else items1.pop(0)
         merged_items.append(minimun)
     not_empty = items1 if len(items1) > 0 else items2
     for item in not_empty:
@@ -19,7 +30,7 @@ def merge(items1, items2):
     return merged_items
 
 
-def split_sort_merge(items):
+def split_sort_merge(items, order='ascend'):
     """Sort given items by splitting list into two approximately equal halves,
     sorting each with an iterative sorting algorithm, and merging results into
     a list in sorted order.
@@ -30,11 +41,12 @@ def split_sort_merge(items):
     Memory usage: O(n) because we are creating a new list from the input using
         the merge function."""
     mid = len(items)//2
-    left, right = insertion_sort(items[:mid]), insertion_sort(items[mid:])
+    left, right = insertion_sort(
+        items[:mid]), insertion_sort(items[mid:], order)
     return merge(left, right)
 
 
-def merge_sort(items):
+def merge_sort(items, order='ascend'):
     """Sort given items by splitting list into two approximately equal halves,
     sorting each recursively, and merging results into a list in sorted order.
     Running time: O(nlog(n)) because as the algorithm runs we still have to
@@ -45,8 +57,9 @@ def merge_sort(items):
     if len(items) < 2:
         return items
     mid = len(items)//2
-    left, right = merge_sort(items[:mid]), merge_sort(items[mid:])
-    return merge(left, right)
+    left, right = merge_sort(
+        items[:mid], order), merge_sort(items[mid:], order)
+    return merge(left, right, order)
 
 
 def partition(items, low, high):

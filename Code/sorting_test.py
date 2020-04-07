@@ -17,6 +17,7 @@ class IsSortedTest(unittest.TestCase):
         assert is_sorted([3, 5]) is True
         assert is_sorted([3, 5, 7]) is True
         assert is_sorted([-4, -3, -2, -1, 0, 1]) is True
+        assert is_sorted([1, 0, -1, -2, -3, -4], 'descend') is True
 
     def test_is_sorted_on_unsorted_integers(self):
         # Negative test cases (counterexamples) with lists of unsorted integers
@@ -24,6 +25,7 @@ class IsSortedTest(unittest.TestCase):
         assert is_sorted([3, 5, 3]) is False
         assert is_sorted([7, 5, 3]) is False
         assert is_sorted([-4, -3, -2, 0, -1]) is False
+        assert is_sorted([-4, -3, -2, -1, 0, 1], 'descend') is False
 
     def test_is_sorted_on_sorted_strings(self):
         # Positive test cases (examples) with lists of sorted strings
@@ -32,6 +34,7 @@ class IsSortedTest(unittest.TestCase):
         assert is_sorted(['A', 'B']) is True
         assert is_sorted(['A', 'B', 'C']) is True
         assert is_sorted(['Bats', 'Bit', 'Boat']) is True
+        assert is_sorted(['Boat', 'Bit', 'Bats'], 'descend') is True
 
     def test_is_sorted_on_unsorted_strings(self):
         # Negative test cases (counterexamples) with lists of unsorted strings
@@ -39,6 +42,7 @@ class IsSortedTest(unittest.TestCase):
         assert is_sorted(['A', 'B', 'A']) is False
         assert is_sorted(['C', 'B', 'A']) is False
         assert is_sorted(['Cats', 'Apples', 'Bats']) is False
+        assert is_sorted(['Bats', 'Bit', 'Boat'], 'descend') is False
 
     def test_is_sorted_on_sorted_tuples(self):
         # Positive test cases (examples) with lists of sorted tuples
@@ -59,6 +63,7 @@ class IsSortedTest(unittest.TestCase):
         assert is_sorted([(2.0, 'A'), (3.1, 'B')]) is True
         assert is_sorted([('A', 'A'), ('B', 'B')]) is True
         assert is_sorted([('A', 'B'), ('C', 'D')]) is True
+        assert is_sorted([('C', 'D'), ('A', 'B')], 'descend') is True
 
     def test_is_sorted_on_unsorted_tuples(self):
         # Negative test cases (counterexamples) with lists of unsorted tuples
@@ -71,6 +76,7 @@ class IsSortedTest(unittest.TestCase):
         assert is_sorted([(3.1, 'B'), (2.0, 'A')]) is False
         assert is_sorted([('B', 'B'), ('A', 'A')]) is False
         assert is_sorted([('C', 'D'), ('A', 'B')]) is False
+        assert is_sorted([('A', 'B'), ('C', 'D')], 'descend') is False
 
 
 class IntegerSortTest(unittest.TestCase):
@@ -93,6 +99,9 @@ class IntegerSortTest(unittest.TestCase):
         items4 = [100, 300, 250, 5]
         items4 = sort(items4)
         assert items4 == [5, 100, 250, 300]
+        items5 = [5, 7, 3]
+        items5 = sort(items5, 'descend')
+        assert items5 == [7, 5, 3]
 
     def test_sort_on_small_lists_of_integers_with_duplicates(self):
         items1 = [3, 3]
@@ -110,6 +119,9 @@ class IntegerSortTest(unittest.TestCase):
         items5 = [2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4]
         items5 = sort(items5)
         assert items5 == [2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4]
+        items3 = [5, 5, 3, 5, 3]
+        items3 = sort(items3, 'descend')
+        assert items3 == [5, 5, 5, 3, 3]
 
     def test_sort_on_lists_of_random_integers(self):
         # Generate list of 10 random integers from range [1...20]
@@ -131,6 +143,12 @@ class IntegerSortTest(unittest.TestCase):
         items3 = sort(items3)  # Mutate
         assert items3 == sorted_items3
 
+        # Generate list of 30 random integers from range [1...100]
+        items4 = random_ints(30, 1, 100)
+        sorted_items4 = sorted(items4, reverse=True)  # Copy
+        items4 = sort(items4, 'descend')  # Mutate
+        assert items4 == sorted_items4
+
     def test_sort_on_lists_of_random_integers_with_duplicates(self):
         # Generate list of 20 random integers from range [1...10]
         items1 = random_ints(20, 1, 10)
@@ -151,6 +169,12 @@ class IntegerSortTest(unittest.TestCase):
         items3 = sort(items3)  # Mutate
         assert items3 == sorted_items3
 
+        # Generate list of 100 random integers from range [1...30]
+        items4 = random_ints(100, 1, 30)
+        sorted_items4 = sorted(items4, reverse=True)  # Copy
+        items3 = sort(items4, 'descend')  # Mutate
+        assert items3 == sorted_items4
+
 
 class StringSortTest(unittest.TestCase):
 
@@ -167,6 +191,9 @@ class StringSortTest(unittest.TestCase):
         items4 = ['A', 'C', 'A', 'B']
         items4 = sort(items4)
         assert items4 == ['A', 'A', 'B', 'C']
+        items5 = ['A', 'C', 'A', 'B']
+        items5 = sort(items5, 'descend')
+        assert items5 == ['C', 'B', 'A', 'A']
 
     def test_sort_on_fish_book_title(self):
         items = 'one fish two fish red fish blue fish'.split()
@@ -175,11 +202,23 @@ class StringSortTest(unittest.TestCase):
         items = sort(items)
         assert items == sorted_items
 
+        items2 = 'one fish two fish red fish blue fish'.split()
+        # Create a copy of list in sorted order
+        sorted_items2 = sorted(items2, reverse=True)
+        # Call a sort function to sort list items in place
+        items2 = sort(items2, 'descend')
+        assert items2 == sorted_items2
+
     def test_sort_on_seven_dwarf_names(self):
         items = 'Doc Grumpy Happy Sleepy Bashful Sneezy Dopey'.split()
         sorted_items = sorted(items)  # Copy
         items = sort(items)  # Mutate
         assert items == sorted_items
+
+        items2 = 'Doc Grumpy Happy Sleepy Bashful Sneezy Dopey'.split()
+        sorted_items2 = sorted(items2, reverse=True)  # Copy
+        items2 = sort(items2, 'descend')  # Mutate
+        assert items2 == sorted_items2
 
 
 def get_sort_function():

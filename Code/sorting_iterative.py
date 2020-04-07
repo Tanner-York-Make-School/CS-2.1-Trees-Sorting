@@ -5,20 +5,36 @@ def swap(arr, i, j):
     arr[i], arr[j] = arr[j], arr[i]
 
 
-def is_sorted(items):
+def compare(item1, item2, order):
+    if order == 'ascend':
+        if item1 < item2:
+            return False
+    elif order == 'descend':
+        if item1 > item2:
+            return False
+    return True
+
+
+def is_sorted(items, order="ascend"):
     """Return a boolean indicating whether given items are in sorted order.
     Running time: O(n) becuase no matter what we have to go through
         every item to check if it is in the correct order.
     Memory usage: 0(1) becuase the function only creates a few ponters and
         not a new array based on the input array, which would make it O(n)
         if it did."""
-    for i in range(len(items)-1):
-        if items[i] > items[i+1]:
-            return False
-    return True
+    if order == 'ascend':
+        for i in range(len(items)-1):
+            if items[i] > items[i+1]:
+                return False
+        return True
+    elif order == 'descend':
+        for i in range(len(items)-1):
+            if items[i] < items[i+1]:
+                return False
+        return True
 
 
-def bubble_sort(items):
+def bubble_sort(items, order='ascend'):
     """Sort given items by swapping adjacent items that are out of order, and
     repeating until all items are in sorted order.
     Running time: O(n^2) under the conditions that the list is in reverse
@@ -31,14 +47,14 @@ def bubble_sort(items):
     while swapped:
         swapped = False
         for i in range(last_unsorted_index-1):
-            if items[i] > items[i+1]:
+            if compare(items[i], items[i+1], order):
                 swap(items, i, i+1)
                 swapped = True
         last_unsorted_index -= 1
     return items
 
 
-def selection_sort(items):
+def selection_sort(items, order='ascend'):
     """Sort given items by finding minimum item, swapping it with first
     unsorted item, and repeating until all items are in sorted order.
     Running time: O(n^2) because for evey item in the list the algorithm checks
@@ -49,14 +65,14 @@ def selection_sort(items):
     while unsorted_index < len(items):
         lowest = unsorted_index
         for i in range(unsorted_index, len(items)):
-            if items[lowest] > items[i]:
+            if compare(items[lowest], items[i], order):
                 lowest = i
         swap(items, unsorted_index, lowest)
         unsorted_index += 1
     return items
 
 
-def insertion_sort(items):
+def insertion_sort(items, order='ascend'):
     """Sort given items by taking first unsorted item, inserting it in sorted
     order in front of items, and repeating until all items are in order.
     Running time: O(n^2) because under the worst case conditions we have to
@@ -66,7 +82,7 @@ def insertion_sort(items):
     unsoted_index = 1
     while unsoted_index < len(items):
         unsorted_index = unsoted_index
-        while unsorted_index > 0 and items[unsorted_index-1] > items[unsorted_index]:
+        while unsorted_index > 0 and compare(items[unsorted_index-1], items[unsorted_index], order):
             swap(items, unsorted_index, unsorted_index-1)
             unsorted_index = unsorted_index-1
         unsoted_index += 1

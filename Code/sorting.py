@@ -12,7 +12,7 @@ def random_ints(count=20, min=1, max=50):
     return [random.randint(min, max) for _ in range(count)]
 
 
-def test_sorting(sort=bubble_sort, num_items=20, max_value=50):
+def test_sorting(order, sort=bubble_sort, num_items=20, max_value=50):
     """Test sorting algorithms with a small list of random items."""
     # Create a list of items randomly sampled from range [1...max_value]
     items = random_ints(num_items, 1, max_value)
@@ -20,10 +20,16 @@ def test_sorting(sort=bubble_sort, num_items=20, max_value=50):
     print('Sorted order?  {!r}'.format(is_sorted(items)))
 
     # Test the sorting algorithm and ensure the list is sorted afterward
-    print('Sorting items with {}(items)'.format(sort.__name__))
-    items = sort(items)
-    print('Sorted items:  {!r}'.format(items))
-    print('Sorted order?  {!r}'.format(is_sorted(items)))
+    if order is None:
+        print('Sorting items with {}(items)'.format(sort.__name__))
+        items = sort(items)
+        print('Sorted items:  {!r}'.format(items))
+        print('Sorted order?  {!r}'.format(is_sorted(items)))
+    else:
+        print(f'Sorting items with {sort.__name__}(items, {order})')
+        items = sort(items, order)
+        print('Sorted items:  {!r}'.format(items))
+        print('Sorted order?  {!r}'.format(is_sorted(items, order)))
 
 
 def main():
@@ -63,13 +69,17 @@ def main():
     try:
         num_items = int(args[1]) if len(args) >= 2 else 20
         max_value = int(args[2]) if len(args) >= 3 else 50
+        order = args[3] if len(args) >= 4 else None
         # print('Num items: {}, max value: {}'.format(num_items, max_value))
     except ValueError:
-        print('Integer required for `num` and `max` command-line arguments')
+        print('Integer required for `num`, `max` and ascend/descend required when using order command-line arguments')
         return
 
     # Test sort function
-    test_sorting(sort_function, num_items, max_value)
+    if order:
+        test_sorting(order, sort_function, num_items, max_value)
+    else:
+        test_sorting(sort_function, num_items, max_value)
 
 
 if __name__ == '__main__':
