@@ -3,6 +3,7 @@ from sorting_iterative import insertion_sort
 
 
 def compare(item1, item2, order):
+    # Determin if item1 is greater than or less that items2 based on the order
     if order == 'ascend':
         if item1 < item2:
             return False
@@ -16,17 +17,19 @@ def merge(items1, items2, order='ascend'):
     """Merge given lists of items, each assumed to already be in sorted order,
     and return a new list containing all items in sorted order.
     Running time: O(n+m) because we have to iterate over every item in both
-        list when merginf them together.
+        list when merging them together.
     Memory usage: O(m+n) because we are creating a new array the size of both
         inputs combined"""
     merged_items = []
-    while len(items1) > 0 and len(items2) > 0:
-        minimun = items2.pop(0) if compare(
-            items1[0], items2[0], order) else items1.pop(0)
-        merged_items.append(minimun)
-    not_empty = items1 if len(items1) > 0 else items2
-    for item in not_empty:
-        merged_items.append(item)
+    i, j = 0, 0
+    while i < len(items1) and j < len(items2):
+        if compare(items1[i], items2[j], order):
+            merged_items.append(items2[j])
+            j += 1
+        else:
+            merged_items.append(items1[i])
+            i += 1
+    merged_items.extend(items1[i:] if i < len(items1) else items2[j:])
     return merged_items
 
 
