@@ -13,7 +13,7 @@ def random_ints(count=20, min=1, max=50):
     return [random.randint(min, max) for _ in range(count)]
 
 
-def test_sorting(order, sort=bubble_sort, num_items=20, max_value=50):
+def test_sorting(sort=bubble_sort, num_items=20, max_value=50, order=None):
     """Test sorting algorithms with a small list of random items."""
     # Create a list of items randomly sampled from range [1...max_value]
     items = random_ints(num_items, 1, max_value)
@@ -79,9 +79,9 @@ def main():
     # Test sort function
     start_time = time.time()
     if order:
-        test_sorting(order, sort_function, num_items, max_value)
+        test_sorting(sort_function, num_items, max_value, order)
     else:
-        test_sorting('ascend', sort_function, num_items, max_value)
+        test_sorting(sort_function, num_items, max_value)
     print("--- %s seconds ---" % (time.time() - start_time))
 
 
