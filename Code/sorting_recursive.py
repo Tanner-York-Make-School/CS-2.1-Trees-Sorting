@@ -1,14 +1,19 @@
 #!python
+import random
 from sorting_iterative import insertion_sort
+
+
+def swap(arr, i, j):
+    arr[i], arr[j] = arr[j], arr[i]
 
 
 def compare(item1, item2, order):
     # Determin if item1 is greater than or less that items2 based on the order
     if order == 'ascend':
-        if item1 < item2:
+        if item1 > item2:
             return False
     elif order == 'descend':
-        if item1 > item2:
+        if item1 < item2:
             return False
     return True
 
@@ -24,11 +29,11 @@ def merge(items1, items2, order='ascend'):
     i, j = 0, 0
     while i < len(items1) and j < len(items2):
         if compare(items1[i], items2[j], order):
-            merged_items.append(items2[j])
-            j += 1
-        else:
             merged_items.append(items1[i])
             i += 1
+        else:
+            merged_items.append(items2[j])
+            j += 1
     merged_items.extend(items1[i:] if i < len(items1) else items2[j:])
     return merged_items
 
@@ -65,27 +70,44 @@ def merge_sort(items, order='ascend'):
     return merge(left, right, order)
 
 
-def partition(items, low, high):
+def partition(items, low, high, order='ascend'):
     """Return index `p` after in-place partitioning given items in range
     `[low...high]` by choosing a pivot (TODO: document your method here) from
     that range, moving pivot into index `p`, items less than pivot into range
     `[low...p-1]`, and items greater than pivot into range `[p+1...high]`.
     TODO: Running time: ??? Why and under what conditions?
     TODO: Memory usage: ??? Why and under what conditions?"""
-    # TODO: Choose a pivot any way and document your method in docstring above
-    # TODO: Loop through all items in range [low...high]
-    # TODO: Move items less than pivot into front of range [low...p-1]
-    # TODO: Move items greater than pivot into back of range [p+1...high]
-    # TODO: Move pivot item into final position [p] and return index p
+    # Choose a pivot any way and document your method in docstring above
+    # pivot_index = random.randint(0, len(items)-1)
+    pivot = items[high]
+    store_index = low - 1
+
+    # Loop through all items in range [low...high]
+    for i in range(low, high):
+        if compare(items[i], pivot, order):
+            # Move items less than pivot into front of range [low...p-1]
+            store_index += 1
+            swap(items, store_index, i)
+        # Move items greater than pivot into back of range [p+1...high]
+    # Move pivot item into final position [p] and return index p
+    swap(items, store_index + 1, high)
+    return store_index + 1
 
 
-def quick_sort(items, low=None, high=None):
+def quick_sort(items, order='ascend', low=None, high=None):
     """Sort given items in place by partitioning items in range `[low...high]`
     around a pivot item and recursively sorting each remaining sublist range.
     TODO: Best case running time: ??? Why and under what conditions?
     TODO: Worst case running time: ??? Why and under what conditions?
     TODO: Memory usage: ??? Why and under what conditions?"""
-    # TODO: Check if high and low range bounds have default values (not given)
-    # TODO: Check if list or range is so small it's already sorted (base case)
-    # TODO: Partition items in-place around a pivot and get index of pivot
-    # TODO: Sort each sublist range by recursively calling quick sort
+    # Check if high and low range bounds have default values (not given)
+    if low is None and high is None:
+        low, high = 0, len(items) - 1
+    # Check if list or range is so small it's already sorted (base case)
+    if low < high:
+        # Partition items in-place around a pivot and get index of pivot
+        pivot_index = partition(items, low, high, order)
+        # Sort each sublist range by recursively calling quick sort
+        quick_sort(items, order, low, pivot_index-1)
+        quick_sort(items, order, pivot_index+1, high)
+    return items
