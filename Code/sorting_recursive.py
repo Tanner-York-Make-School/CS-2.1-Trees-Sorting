@@ -80,18 +80,18 @@ def partition(items, low, high, order='ascend'):
     # Choose a pivot any way and document your method in docstring above
     # pivot_index = random.randint(0, len(items)-1)
     pivot = items[high]
-    store_index = low - 1
+    p_index = low - 1
 
     # Loop through all items in range [low...high]
     for i in range(low, high):
         if compare(items[i], pivot, order):
             # Move items less than pivot into front of range [low...p-1]
-            store_index += 1
-            swap(items, store_index, i)
+            p_index += 1
+            swap(items, p_index, i)
         # Move items greater than pivot into back of range [p+1...high]
     # Move pivot item into final position [p] and return index p
-    swap(items, store_index + 1, high)
-    return store_index + 1
+    swap(items, p_index + 1, high)
+    return p_index + 1
 
 
 def quick_sort(items, order='ascend', low=None, high=None):
