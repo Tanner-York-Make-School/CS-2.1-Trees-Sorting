@@ -2,7 +2,7 @@
 
 from sorting import random_ints
 from sorting_iterative import is_sorted, bubble_sort, selection_sort, insertion_sort, binary_insertion_sort
-from sorting_recursive import split_sort_merge, merge_sort, quick_sort
+from sorting_recursive import split_sort_merge, merge_sort, quick_sort, partition
 from sorting_integer import counting_sort, bucket_sort
 import unittest
 
@@ -77,6 +77,30 @@ class IsSortedTest(unittest.TestCase):
         assert is_sorted([('B', 'B'), ('A', 'A')]) is False
         assert is_sorted([('C', 'D'), ('A', 'B')]) is False
         assert is_sorted([('A', 'B'), ('C', 'D')], 'descend') is False
+
+
+class PartitionTest(unittest.TestCase):
+
+    def test_partiation_on_list_of_integers(self):
+        items = [100, 300, 250, 5, 6]
+
+        p_index = partition(items, 0, 0)
+        assert p_index == 0
+
+        p_index = partition(items, 0, 1)
+        assert p_index == 1
+
+        p_index = partition(items, 0, 4)
+        assert p_index == 1
+
+    def test_partition_on_list_of_strings(self):
+        items = ['A', 'C', 'D', 'B']
+
+        p_index = partition(items, 0, 0)
+        assert p_index == 0
+
+        p_index = partition(items, 0, 2)
+        assert p_index == 2
 
 
 class IntegerSortTest(unittest.TestCase):
