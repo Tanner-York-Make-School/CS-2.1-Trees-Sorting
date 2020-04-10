@@ -1,5 +1,6 @@
 #!python
 import random
+import statistics
 from sorting_iterative import insertion_sort
 
 
@@ -72,26 +73,33 @@ def merge_sort(items, order='ascend'):
 
 def partition(items, low, high, order='ascend'):
     """Return index `p` after in-place partitioning given items in range
-    `[low...high]` by choosing a pivot (TODO: document your method here) from
+    `[low...high]` by choosing a pivot with median of 3 random elements from
     that range, moving pivot into index `p`, items less than pivot into range
     `[low...p-1]`, and items greater than pivot into range `[p+1...high]`.
     TODO: Running time: ??? Why and under what conditions?
     TODO: Memory usage: ??? Why and under what conditions?"""
     # Choose a pivot any way and document your method in docstring above
     # pivot_index = random.randint(0, len(items)-1)
-    pivot = items[high]
-    p_index = low - 1
 
-    # Loop through all items in range [low...high]
+    # Set the pivot index to the median of 3 random elements
+    p_index = statistics.median(random.choices(range(low, high), k=3))
+    pivot = items[p_index]
+
+    # Move pivot to the end of list for partitioning (not needed if p_index is high)
+    swap(items, high, p_index)
+    last_small_index = low - 1
+
+    # Loop through all items in range [low...high-1]
     for i in range(low, high):
+        # items[i] < pivot, when order equals ascend
         if compare(items[i], pivot, order):
-            # Move items less than pivot into front of range [low...p-1]
-            p_index += 1
-            swap(items, p_index, i)
-        # Move items greater than pivot into back of range [p+1...high]
+            # Move current item into range [low..last_small_index]
+            last_small_index += 1
+            swap(items, last_small_index, i)
+        # items greater than pivot are in the range of [last_small_index+1...i]
     # Move pivot item into final position [p] and return index p
-    swap(items, p_index + 1, high)
-    return p_index + 1
+    swap(items, last_small_index + 1, high)
+    return last_small_index + 1
 
 
 def quick_sort(items, order='ascend', low=None, high=None):
