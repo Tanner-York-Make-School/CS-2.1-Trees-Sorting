@@ -76,8 +76,9 @@ def partition(items, low, high, order='ascend'):
     `[low...high]` by choosing a pivot with median of 3 random elements from
     that range, moving pivot into index `p`, items less than pivot into range
     `[low...p-1]`, and items greater than pivot into range `[p+1...high]`.
-    TODO: Running time: ??? Why and under what conditions?
-    TODO: Memory usage: ??? Why and under what conditions?"""
+    Running time: O(n) beacuse we only iterate over the range once and swap
+        the elements in O(1) time complexity
+    Memory usage: O(1) because the algorithms is swapping in place."""
     # Choose a pivot any way and document your method in docstring above
     # pivot_index = random.randint(0, len(items)-1)
 
@@ -105,9 +106,14 @@ def partition(items, low, high, order='ascend'):
 def quick_sort(items, order='ascend', low=None, high=None):
     """Sort given items in place by partitioning items in range `[low...high]`
     around a pivot item and recursively sorting each remaining sublist range.
-    TODO: Best case running time: ??? Why and under what conditions?
-    TODO: Worst case running time: ??? Why and under what conditions?
-    TODO: Memory usage: ??? Why and under what conditions?"""
+    Best case running time: O(nlog(n)) under the condition that the pivot is
+        the median of the list because it creates a balanced binary tree 
+        iteration of the list.
+    Worst case running time: O(n^2) under the condition that the pivot is the
+        largest or smallest element in the list because it creates an
+        unbalanced binary tree iteration of the list
+    Memory usage: O(nlog(n)) because as it recusivly runs through the items
+        there can be (at best) nlog(n) callbacks open at one time."""
     # Check if high and low range bounds have default values (not given)
     if low is None and high is None:
         low, high = 0, len(items) - 1
