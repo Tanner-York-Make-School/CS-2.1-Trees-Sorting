@@ -79,28 +79,25 @@ class IsSortedTest(unittest.TestCase):
         assert is_sorted([('A', 'B'), ('C', 'D')], 'descend') is False
 
 
-# class PartitionTest(unittest.TestCase):
+class PartitionTest(unittest.TestCase):
 
-#     def test_partiation_on_list_of_integers(self):
-#         items = [100, 300, 250, 5, 6]
+    def test_partiation_on_list_of_integers(self):
+        items = [100, 300, 250, 5, 6]
 
-#         p_index = partition(items, 0, 0)
-#         assert p_index == 0
+        p_index = partition(items, 0, len(items)-1)
+        for item in items[:p_index]:
+            assert item <= items[p_index]
+        for item in items[p_index:]:
+            assert item >= items[p_index]
 
-#         p_index = partition(items, 0, 1)
-#         assert p_index == 1
+    def test_partition_on_list_of_strings(self):
+        items = ['A', 'C', 'D', 'B']
 
-#         p_index = partition(items, 0, 4)
-#         assert p_index == 1
-
-#     def test_partition_on_list_of_strings(self):
-#         items = ['A', 'C', 'D', 'B']
-
-#         p_index = partition(items, 0, 0)
-#         assert p_index == 0
-
-#         p_index = partition(items, 0, 2)
-#         assert p_index == 2
+        p_index = partition(items, 0, len(items)-1)
+        for item in items[:p_index]:
+            assert item <= items[p_index]
+        for item in items[p_index:]:
+            assert item >= items[p_index]
 
 
 class IntegerSortTest(unittest.TestCase):
