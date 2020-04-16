@@ -30,7 +30,7 @@ def counting_sort(numbers):
     return output
 
 
-def bucket_sort(numbers, num_buckets=10):
+def bucket_sort(numbers, num_buckets=0):
     """Sort given numbers by distributing into buckets representing subranges,
     then sorting each bucket and concatenating all buckets in sorted order.
     Running time: O(n) under the consition that the numbers in the array are
@@ -39,6 +39,10 @@ def bucket_sort(numbers, num_buckets=10):
         on a list of length n but some fraction of n.
     Memory usage: O(n) because as we but the elemnents in buckest we are adding
         a new space in memory for each element."""
+    # Improve time complexity by setting num_buckets to length of numbers
+    if num_buckets <= 0:
+        num_buckets = len(numbers)
+
     # Create list of buckets to store numbers in subranges of input range
     buckets = [[] for _ in range(num_buckets + 1)]
     # Loop over given numbers and place each item in appropriate bucket
