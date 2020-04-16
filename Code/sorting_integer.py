@@ -50,9 +50,9 @@ def bucket_sort(numbers, num_buckets=10):
     for index, bucket in enumerate(buckets):
         buckets[index] = counting_sort(bucket)
     # Loop over buckets and append each bucket's numbers into output list
-    # TODO: Improve this to mutate input instead of creating new output list
-    output = []
+    count = 0
     for bucket in buckets:
         for value in bucket:
-            output.append(value)
-    return output
+            numbers[count] = value
+            count += 1
+    return numbers
