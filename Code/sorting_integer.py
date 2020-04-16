@@ -38,9 +38,7 @@ def bucket_sort(numbers, num_buckets=10):
         using another sorting algorithm, we are on average not performing it
         on a list of length n but some fraction of n.
     Memory usage: O(n) because as we but the elemnents in buckest we are adding
-        new spaces in memory for each element."""
-    # Find range of given numbers (minimum and maximum values)
-    numbers_range = max(numbers) - min(numbers)
+        a new space in memory for each element."""
     # Create list of buckets to store numbers in subranges of input range
     buckets = [[] for _ in range(num_buckets + 1)]
     # Loop over given numbers and place each item in appropriate bucket
