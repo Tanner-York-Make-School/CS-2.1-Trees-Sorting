@@ -95,6 +95,16 @@ class PrefixTree:
         for child in node.get_children():
             self._traverse(child, prefix + child.character, visit)
 
+    def delete(self, string):
+        """Delete a given string by marking its therminal node as false, if the
+        string is in the list else, raise a value error"""
+        if self.contains(string):
+            node, index = self._find_node(string)
+            node.terminal = False
+            self.size -= 1
+        else:
+            raise ValueError(f"String was not found in the prefix tree.")
+
 
 def create_prefix_tree(strings):
     print(f'strings: {strings}')

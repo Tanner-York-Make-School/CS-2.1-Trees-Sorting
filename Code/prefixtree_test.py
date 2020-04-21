@@ -245,6 +245,18 @@ class PrefixTreeTest(unittest.TestCase):
             assert len(tree_strings) == len(input_strings)  # Check length only
             self.assertCountEqual(tree_strings, input_strings)  # Ignore order
 
+    def test_delete(self):
+        strings = ['ABC', 'ABD', 'A', 'XYZ']
+        tree = PrefixTree(strings)
+        # Test delete with string in list
+        tree.delete('ABC')
+        assert tree.contains('ABC') == False
+        assert tree.size == 3
+        # Test delete with string not in list
+        self.assertRaises(ValueError, tree.delete, 'ABC')
+        assert tree.strings() == ['A', 'ABD', 'XYZ']
+        assert tree.size == 3
+
 
 if __name__ == '__main__':
     unittest.main()
