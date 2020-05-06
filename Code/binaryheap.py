@@ -21,8 +21,7 @@ class BinaryMinHeap(object):
 
     def is_empty(self):
         """Return True if this heap is empty, or False otherwise."""
-        # TODO: Check if empty based on how many items are in the list
-        # ...
+        return len(self.items) == 0
 
     def size(self):
         """Return the number of items in this heap."""
@@ -30,8 +29,10 @@ class BinaryMinHeap(object):
 
     def insert(self, item):
         """Insert the given item into this heap.
-        TODO: Best case running time: ??? under what conditions?
-        TODO: Worst case running time: ??? under what conditions?"""
+        Best case running time: O(1) under the condition that 
+            the new item is the smallest item
+        Worst case running time: O(n) under the conditions that
+            the new item is the largest item"""
         # Insert the item at the end and bubble up to the root
         self.items.append(item)
         if self.size() > 1:
@@ -47,8 +48,10 @@ class BinaryMinHeap(object):
 
     def delete_min(self):
         """Remove and return the minimum item at the root of this heap.
-        TODO: Best case running time: ??? under what conditions?
-        TODO: Worst case running time: ??? under what conditions?"""
+        Best case running time: O(1) under the condition that the new root is 
+            the largest item
+        Worst case running time: O(log(n)) under the conditions that the new
+             root is one of the smallest items"""
         if self.size() == 0:
             raise ValueError('Heap is empty and has no minimum item')
         elif self.size() == 1:
@@ -67,8 +70,10 @@ class BinaryMinHeap(object):
         """Remove and return the minimum item at the root of this heap,
         and insert the given item into this heap.
         This method is more efficient than calling delete_min and then insert.
-        TODO: Best case running time: ??? under what conditions?
-        TODO: Worst case running time: ??? under what conditions?"""
+        Best case running time: O(1) under the condition that the new root is 
+            the largest item
+        Worst case running time: O(log(n)) under the conditions that the new
+             root is one of the smallest items"""
         if self.size() == 0:
             raise ValueError('Heap is empty and has no minimum item')
         assert self.size() > 0
@@ -84,7 +89,7 @@ class BinaryMinHeap(object):
         swapping out of order items, or until the root node is reached.
         Best case running time: O(1) if parent item is smaller than this item.
         Worst case running time: O(log n) if items on path up to root node are
-        out of order. Maximum path length in complete binary tree is log n."""
+            out of order. Maximum path length in complete binary tree is log n."""
         if index == 0:
             return  # This index is the root node (does not have a parent)
         if not (0 <= index <= self._last_index()):
@@ -94,17 +99,18 @@ class BinaryMinHeap(object):
         # Get the parent's index and value
         parent_index = self._parent_index(index)
         parent_item = self.items[parent_index]
-        # TODO: Swap this item with parent item if values are out of order
-        # ...
-        # TODO: Recursively bubble up again if necessary
-        # ...
+        # Swap this item with parent item if values are out of order
+        if item < parent_item:
+            self.items[parent_index], self.items[index] = self.items[index], self.items[parent_index]
+            # Recursively bubble up again if necessary
+            self._bubble_up(parent_index)
 
     def _bubble_down(self, index):
         """Ensure the heap ordering property is true below the given index,
         swapping out of order items, or until a leaf node is reached.
         Best case running time: O(1) if item is smaller than both child items.
         Worst case running time: O(log n) if items on path down to a leaf are
-        out of order. Maximum path length in complete binary tree is log n."""
+            out of order. Maximum path length in complete binary tree is log n."""
         if not (0 <= index <= self._last_index()):
             raise IndexError('Invalid index: {}'.format(index))
         # Get the index of the item's left and right children
@@ -114,14 +120,18 @@ class BinaryMinHeap(object):
             return  # This index is a leaf node (does not have any children)
         # Get the item's value
         item = self.items[index]
-        # TODO: Determine which child item to compare this node's item to
-        child_index = 0
-        # ...
-        # TODO: Swap this item with a child item if values are out of order
+        # Determine which child item to compare this node's item to
+        child_index = left_index
+        addition = 1 if right_index+1 <= len(self.items) else 0
+        for i in range(left_index, right_index+addition):
+            if self.items[i] < self.items[child_index]:
+                child_index = i
+        # Swap this item with a child item if values are out of order
         child_item = self.items[child_index]
-        # ...
-        # TODO: Recursively bubble down again if necessary
-        # ...
+        if child_item < item:
+            self.items[child_index], self.items[index] = self.items[index], self.items[child_index]
+            # Recursively bubble down again if necessary
+            self._bubble_down(child_index)
 
     def _last_index(self):
         """Return the last valid index in the underlying array of items."""
